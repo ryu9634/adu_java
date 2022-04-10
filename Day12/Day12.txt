@@ -1,0 +1,306 @@
+DB 랭킹
+https://db-engines.com/en/ranking
+
+데이터베이스(DataBase)
+Data : 자료
+DataBase : 저장소, 데이터를 통합하여 관리하는 집합체
+DBMS(Database Management System) : 데이터베이스를 관리해주는 소프트웨어
+
+✔ 데이터베이스 관리 시스템을 사용하는 이유
+- 중복된 데이터를 제거
+- 자료를 구조화시킬 수 있음
+- 효율적인 처리
+- 다양한 프로그램을 사용하는 사용자들과 데이터를 공유
+
+MySQL 다운로드
+https://www.mysql.com/downloads/
+
+RDB(Releational DataBase)
+- 관계형 데이터 모델에 기초를 둔 데이터베이스
+- 모든 데이터를 2차원 테이블 형태로 표현
+
+RDBMS
+- RDB를 생성하고 수정하고 관리할 수 있는 소프트웨어
+- RDBMS의 테이블은 서로 연관되어 있어 일반 DBMS보다 효율적으로 데이터를 저장, 구성 및 관리할 수 있음
+- 정규화를 통해 데이터의 중복성을 최소화하여 트랜젝션을 수행하는 것이 더 쉬움
+- 데이터의 원자성, 일관성, 격리 및 내구성을 유지하며 데이터의 무결성을 높임
+
+SQL(Structured Query Language)
+- 관계형 데이터베이스(RDBMS)에서 데이터를 정의, 조작, 제어하기 위해 사용하는 언어
+- 대소문자를 구별하지 않음
+- 문자열을 저장할 때 ''(싱글 따옴표)만 사용
+
+            데이터베이스              -----> 테이블(엑셀과 유사)
+(사용자, 함수, 프로시저, 테이블, 뷰 ..)       행 : 레코드, 로우
+                                         열 : 필드, 컬럼, 어트리뷰트
+
+
+SQL 구문
+
+데이터베이스 확인
+    show databases;
+
+데이터베이스 생성
+    create database 데이터베이스명;
+    create database aiclass;
+
+데이터베이스 삭제
+    drop database 데이터베이스명;
+    drop database aiclass;
+
+데이터베이스 사용
+    use 데이터베이스명;
+    use aiclass;
+
+
+테이블(Table)
+- 데이터를 행과 열로 스키마에 따라 저장할 수 있는 구조
+
+✔ 스키마
+데이터베이스의 구조와 제약 조건에 관한 명세를 기술한 집합을 의미
+
+테이블 생성
+    create table 테이블명(
+        컬럼명1 데이터타입 제약조건,
+        컬럼명2 데이터타입 제약조건,
+        컬럼명3 데이터타입 제약조건,
+        ...
+        컬럼명n 데이터타입 제약조건
+    )
+
+
+데이터 타입
+1. 숫자 타입
+    정수 : tinyint, smallint, meduimint, int, bigint ..
+    소수 : float, double
+2. 문자열 타입
+    텍스트 : char, varchar, text
+    char(10) : 1byte만 저장하더라도 총 10byte를 소모
+    varchar(10) : 1byte만 저장하면 총 1byte를 소모, 총 65535byte까지 저장 가능
+
+    바이너리 : binary, varbinary
+    열거 : enum
+    enum('남자', '여자')
+3. 날짜와 시간타입
+    날짜 : date
+    날짜와 시간타입 : datetime, timestamp
+    timestamp : 1970년 1월 1일 0시 0분 0초 부터, 밀리세컨드 단위로 증가
+
+
+제약조건
+데이터의 무결성을 지키기 위해 데이터를 입력받을 때 실행하는 검사 규칙
+
+not null : 컬럼에 null을 저장할 수 없음
+unique :  중복된 값을 저장할 수 없음, null값을 허용
+default : 기본값을 설정
+auto_increment : 자동으로 숫자가 증가되어 추가, 중복값이 저장되지 않음, 직접 데이터를 추가할 수 없음
+primary key : unique 제약과 not null 제약을 동시에 가짐, 테이블에 오직 하나의 컬럼에만 적용,
+            데이터를 쉽고 빠르게 찾을 수 있게 설정(색인), 외래키가 참조할 수 있도록 설정
+foreign key : 다른 테이블과 연결해주는 역할, 기준이 되는 테이블의 내용을 참조해서 레코드가 입력
+            primary key를 참조
+
+
+예제 테이블 생성
+    create table tb_member (
+        mem_idx bigint auto_increment primary key,
+        mem_userid varchar(20) unique not null,
+        mem_userpw varchar(20) not null,
+        mem_name varchar(20) not null,
+        mem_hp varchar(20) not null,
+        mem_email varchar(100) not null,
+        mem_hobby varchar(100),
+        mem_ssn1 varchar(6) not null,
+        mem_ssn2 varchar(7) not null,
+        mem_zipcode varchar(5),
+        mem_address1 varchar(100),
+        mem_address2 varchar(100),
+        mem_address3 varchar(100),
+        mem_regist datetime default now()
+    );
+
+테이블 구조 확인
+    desc 테이블명;
+    desc tb_member;
+
+테이블 삭제
+    drop table 테이블명;
+    drop table tb_member;
+
+테이블 컬럼 추가
+    alter table 테이블명 add 컬럼명 타입 제약조건;
+    alter table tb_member add mem_point int default 0;
+
+테이블 컬럼 수정
+    alter table 테이블명 modify column 컬럼명 타입 제약조건;
+    alter table tb_member modify column mem_point double default 0;
+
+테이블 컬럼 삭제
+    alter table 테이블명 drop 컬럼명;
+    alter table tb_member drop mem_point;
+
+테이블 자료 확인
+    select * from 테이블명;
+    select * from tb_member;
+
+
+데이터 삽입(insert)
+    insert into 테이블명 values (값1, 값2, 값3 ..);
+    insert into 테이블명 (컬럼명1, 컬럼명2 ..) values (값1, 값2 ..);
+
+    insert into tb_member (mem_userid, mem_userpw, mem_name, mem_hp, mem_email,
+    mem_hobby, mem_ssn1, mem_ssn2, mem_zipcode, mem_address1, mem_address2,
+    mem_address3) values ('apple', '1111', '김사과', '010-1111-1111', 'apple@apple.com',
+    '드라이브', '001011', '4068518', '12345', '서울 서초구 양재동', '11-11', '11111');
+
+
+데이터 수정(update)
+    update 테이블명 set 컬럼1 = 값1, 컬럼2 = 값2 ...;
+    update 테이블명 set 컬럼1 = 값1, 컬럼2 = 값2 ... where 조건절;
+
+✔ mysql safe mode 해제
+    edit -> preferences -> sql editor > safe updates (reject ...) 체크 해제
+
+
+데이터 삭제(delete)
+    delete from 테이블명;
+        delete from tb_member;
+    delete from 테이블명 where 조건절;
+        delete from tb_member where mem_idx = 1;
+
+
+SQL 연산자
+산술 연산자
+    +, -, *, /, div, mod
+    div : 왼쪽 피연산자를 오른쪽 피연산자로 나눈 후 소수부분을 버림
+    mod : 나머지 연산자
+대입 연산자
+    = : 대입
+비교 연산자
+    >, <, =, <>, >=, <=, is, is not, between A and B, in()
+    = : 같다
+    <> : 다르다
+    is : 왼쪽 피연산자와 오른쪽 피연산자가 같으면 참
+    is not : 왼쪽 피연산자와 오른쪽 피연산자가 다르면 참
+    between A and B : 값이 A보다는 크거나 같고, B보다는 작거나 같으면 참
+    in() ; 연산자의 값이 인수로 전달받은 리스트에 존재하면 참
+논리 연산자
+    and, or, xor, not
+
+
+검색(select)
+    select 컬럼명1, 컬럼명2, ... from 테이블명;
+    select mem_idx, mem_userid, mem_name from tb_member;
+    select mem_userid, mem_name, mem_idx from tb_member;
+
+✔ * : 모든 컬럼, 속도가 느려짐
+
+    select 컬럼명1, 컬럼명2, ... from 테이블명 where 조건절;
+    select mem_idx, mem_name, mem_userid from tb_member where mem_idx = 3;
+
+    select 컬럼명1, 컬럼명2, ... from 테이블명 order by 정렬할 컬럼 (asc, desc)
+    select mem_idx, mem_userid, mem_name from tb_member order by mem_idx asc; -- 오름차순
+✔ asc는 생략 가능
+
+    🎁 집계함수
+        데이터의 그룹을 집계(연산)할 수 있는 함수
+        count() : 데이터의 개수
+        max() : 최대값
+        min() : 최소값
+        sum() : 합계
+        avg() : 평균
+
+    select 집계함수 또는 그룹을 맺은 컬럼 from 테이블명 group by 컬럼명;
+    select mem_gender from tb_member group by mem_gender;
+
+✔ 컬럼 별명 주기
+    select 컬럼명 as 별명 from 테이블명;
+    select 컬럼명 별명 from 테이블명;
+
+프로필 테이블
+    create table tb_profile (
+        pro_idx bigint,
+        pro_age int,
+        pro_height int,
+        pro_weight double,
+        pro_mbti varchar(10),
+        foreign key(pro_idx) references tb_member(mem_idx)
+    );
+
+
+조인(join)
+- 데이터베이스 여러 테이블에서 가져온 레코드를 하나의 테이블이나 결과 집합으로 표현
+    select 컬럼명1, 컬럼명2 .. from 테이블1 [inner, left, right] join 테이블2 on
+    테이블1.공통컬럼명 = 테이블2.공통컬럼명 where 조건절;
+
+    ✔ inner join(교집합)
+    select mem_idx, mem_userid, mem_name, mem_hp, mem_gender, pro_age, pro_mbti
+    from tb_member inner join tb_profile on tb_member.mem_idx = tb_profile.pro_idx;
+
+    ✔ left join(테이블1 기준으로 테이블2를 조합하는 형태)
+    select mem_idx, mem_userid, mem_name, mem_hp, mem_gender, pro_age, pro_mbti
+    from tb_member left join tb_profile on tb_member.mem_idx = tb_profile.pro_idx;
+
+    ✔ right join(테이블2 기준으로 테이블1를 조합하는 형태)
+    select mem_idx, mem_userid, mem_name, mem_hp, mem_gender, pro_age, pro_mbti
+    from tb_member right join tb_profile on tb_member.mem_idx = tb_profile.pro_idx;
+
+
+JDBC(Java Database Connectivity)
+자바에서 DB 소프트웨어와 연결하여 프로그램을 개발하기 위해 사용하는 API
+
+✔ API(Application Programming Interface)
+소프트웨어를 구축하고 통합하기 위한 정의 및 프로토콜 세트
+
+    자바 어플리케이션 <--------> JDBC API  <------>  JDBC Driver <------->  MySQL
+
+JDBC Driver 다운로드
+https://dev.mysql.com/downloads/connector/j/
+- platform Independent 선택
+- zip 버전 다운로드
+
+인텔리제이 JDBC 드라이버 추가
+    file -> Project Structure -> Library -> +버튼 누르고 드라이버 jar파일 선택 -> OK
+
+JDBC를 통해 DBMS 연결
+    JDBC Driver를 로딩
+        Class.forName("jdbc드라이버 패키지명");
+        Class.forName("com.mysql.cj.jdbc.Driver");
+    JDBC와 DBMS 연결
+        DriverManager.getConnection(주소, 아이디, 비밀번호);
+        연결 성공 후 Connection 객체 생성
+        주소 : jdbc:mysql://ip주소/db명?useSSL=SSL사용여부(true, false)
+        jdbc:mysql://127.0.0.1/aiclass?useSSL=false
+
+
+Statement 인터페이스
+- Connection 클래스의 createStatement() 메소드로 호출
+- Statement 객체는 Statement 인터페이스를 구현한 객체
+- executeUpdate() 메소드를 통해 insert, update, delete SQL구문을 실행할 수 있음
+- executeQuery() 메소드를 통해 select SQL구문을 실행할 수 있음
+
+
+문제.
+회원가입 프로그램을 작성
+출력
+    ********** 회원가입 **********
+    아이디를 입력하세요. apple
+    비밀번호를 입력하세요. 1111
+    이름을 입력하세요. 김사과
+    ....
+    주소를 입력하세요. 서울 서초구 양재동
+    상세주소를 입력하세요. 11-11
+    참고사항을 입력하세요. 201동 201호
+
+    회원가입이 완료되었습니다!
+
+문제.
+회원 탈퇴 프로그램을 작성해보자.
+    ********** 회원 탈퇴 **********
+    탈퇴할 아이디를 입력하세요 > avocado
+
+    탈퇴되었습니다!
+
+
+
+
+

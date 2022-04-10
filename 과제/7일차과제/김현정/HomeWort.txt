@@ -1,0 +1,200 @@
+과제.
+아래 용어에 대해 조사하고 예제를 만들어보자!
+- 상속
+- 접근제어자
+- super 키워드
+- this 키워드
+- 생성자
+- 오버로딩
+- 오버라이딩
+
+
+-상속
+부모가 자식에게 물려주는 행위!!!!!
+자식은 상속을 통해서 부모가 물려준 것을 자연스럽게 이용할 수 있다.
+
+public class A{
+int field1;
+void method1(){...}
+
+public class B extends A{
+String field2;
+void method2(){...}
+}
+
+-접근 제어자
+접근 제어자는 public, protected, default, private와 같이 네 가지 종류가 있다.
+접근제한                   적용할 내용                       접근할 수 없는 클래스
+public              클래스, 필드, 생성자, 메소드        없음
+protedcted          필드,생성자,메소드                자식 클래스가 아닌 다른 패키지에 소속된 클래스
+default             클래스, 필드,생성자, 메소드         다른 패키지에 소속된 클래스
+private             필드, 생성자, 메소드              모든 외부 클래스
+
+[A.java] protedcted 접근 제한자
+package package1;
+
+public class A{
+protedcted String field;
+protedcd A(){
+
+}
+protedctd void method(){
+
+}
+}
+
+[B.java] protedcted 접근 제한자 테스트
+package package1;
+
+public clas B{
+public void method(){
+A a = new A();         // (o)
+a.field = 'value'      // (o)
+a.method();            // (o)
+}
+}
+
+[C.java] protedcted 접근 제한자 테스트
+package package 2;
+import package1.A;
+
+public class C{
+public void method(){
+A a = new A(){           // (x)
+a.field = "value";       // (x)
+a.method();              // (x)
+}
+}
+
+[D.java] protedcted 접근 제한자
+package package2;
+import package1.A;
+
+public class D extends A{
+public D(){
+super();                  //(o)
+this.field = 'value';    //(o)
+this.method();           //(o)
+
+}
+}
+
+-super 키워드
+super(매개값, ...)는 매개값의 타입과 일치하는 부모 생성자를 호출.
+매개값의 타입과 일치하는 부모 생성자가 없을 경우 컴파일 오류발생.
+super(매개값,...)가 생략되면 컴파일러에 의해 super()가 자동적으로 추가되기 때문에 부모의 기본 생성자가 존재해야 한다.
+부모 클래스에 기본 생성자가 없고 매개 변수가 있는 생성자만 있다면 자식 생성자에서 반드시 부모 생성자 호출을 위해 super(매개값)를
+명시적으로 호출해야 한다.
+super(매개값,...)는 반드시 자식 생성자 첫 줄에 위치해야 한다. 그렇지 않으면 컴파일 에러 발생.
+[Peaple.java] 부모 클래스
+public class People{
+public String name;
+public String ssn;
+
+public People(String name, String ssn){
+this.name = name;
+this.ssn = ssn;
+}
+}
+
+[Student.java] 자식 클래스
+public class Student extends People{
+public int studentNo;
+public Student(String name, String ssn, int studentNo{
+super (name, ssn);
+this.studentNo = studentNo;
+}
+}
+
+-생성자
+생성자는 new 연산자와 같이 사용되어 클래스로부터 객체를 생성할 때 호출되어 객체의 초기화를 담당.
+객체 초기화란 필드를 초기화하거나, 메소드를 호출해서 객체를 사용할 준비를 하는 것을 말함.
+생성자를 실행시키지 않고는 클래스로부터 객체를 만들 수 없음.
+new 연산자에 의해 생성자가 성공적으로 실행되면 힙 영역에 객체가 생성되고 객체의 주소가 리턴됨.
+리턴된 객체의 주소는 클래스 타입 변수에 저장되어 객체에 접근할 때 이용됨.
+생성자가 성공적으로 실행되지 않고 예외가 발생했다면 객체는 생성되지 않음.
+
+생성자 선언
+클래스( 매개변수선언, ...){
+//객체의 초기화 코드
+}
+
+[Car.java] 생성자 선언
+public class Car{
+//생성자
+Car(String color, int cc{
+
+}
+}
+
+[CarExample.java] 생성자를 호출해서 객체 생성
+public class CarExample{
+public static void main(String[] args){
+
+Car myCar = new Car("검정, 3000";
+//Car myCar - new Car(); (x) <---------------기본 생성자를 호출할 수 없다.
+
+}
+}
+
+-오버로딩
+오버로딩이란 하나의 클래스 내에 인수의 개수나 형이 다른 동일한 이름의 메소드를 여러 개 정의하는 것.
+
+class Cat{
+String name;
+String place ;
+int age;
+
+voide SetData(String n, String p, int a){
+name = n;
+place = p;
+age = a;
+}
+void print(){
+System.out.println(place+":"+name+" "+age +"살");}
+void print(String p, int a){
+place = p;
+System.out.println(place + ":고양이는"+a+"마리입니다.");
+}
+void print(String variety){
+System.out.println(place+":"+name+" "+age+"세"+variety);
+}
+}
+
+Class Pet{
+public static void main(String [] args){
+Cat cat1 = new Cat();
+Cat cat2 = new Cat();
+Cat cat3 = new Cat();
+cat1.setData("로빈","우리집", 10);
+cat2.setData("아이","옆 집", 14);
+cat.print("잡종");
+cat.print(0;
+cat3.print("우리집", 0);
+
+}
+}
+
+-오버라이딩
+슈퍼클래스의 메소드는 서브클래스에서 다시 정의할 수 있다.
+오버라이딩이란 상속된 메소드와 동일한 이름, 동일한 인수를 가지는 메소드를 정의하여 메소드를 덮어쓰는 것입니다. 반환값도 형도 같아야 합니다.
+
+class Greeting{
+void bye(){
+System.out.println("good bye");
+}
+}
+...
+Greeting greeting = new Greeing();
+greeting.bye();
+...
+
+class Insa extedns Greeting{
+void bye(){
+System.out.printl("안녕히 계세요.");
+}
+}
+...
+Insa insa = new Insa() ;
+insa.bye();
+...

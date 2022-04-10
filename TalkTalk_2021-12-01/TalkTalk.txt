@@ -1,0 +1,21 @@
+직렬화(Serialize)
+- 자바 시스템 내부에서 사용하는 Object 또는 Data를 외부의 자바 시스템에서도 사용할 수 있도록
+byte 형태로 데이터를 변환
+- JVM의 메모리(힙, 스택)에 저장되어 있는 객체, 데이터를 byte 형태로 변환
+
+serialVersionUID
+- 직렬화에 사용
+- 컴파일러가 특정한 계산한 값을 부여하는데 Serializable class 또는 Outer Class에 변경이
+있으면 serialVersionUID 값이 바뀌게 됨
+- 컴파일러는 Serializable class 또는 Outer Class에 변경이 있으면 serialVersionUID
+변경이 되기 때문에 값이 다르다고 생각
+
+enum
+- Enumeration(열거) 의미
+- 관련이 있는 상수들의 집합
+- final로 String과 같은 문자열이나 숫자들을 나타내는 기본 자료형의 값을 고정
+
+transient
+- Serialize하는 과정을 제외하고 싶은 경우 선언하는 키워드
+- 패스워드와 같은 보안정보가 직렬화과정에서 제외하고 싶은 경우 적용
+- 다양한 이유로 데이터를 전송하고 싶지 않을 때 선언
